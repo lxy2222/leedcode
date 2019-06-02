@@ -4,42 +4,27 @@
  * @return {number[]}
  */
 var findMinHeightTrees = function(n, edges) {
-  var leaves = {}
-  var queue = []
-  if (n === 1) return [0]
-  for (let i = 0; i < n; i ++) {
-      leaves[i] = []
-  }
-  for (let [u, v] of edges) {
-      leaves[u].push(v)
-      leaves[v].push(u)
-  }
-  // 遍历叶子节点
-  Object.keys(leaves).forEach((key, value) => {
-      if (value.length === 1) {
-          queue.push(key)
-      }
-  })
-//     首先要减掉叶子节点
-  while (n > 2) {
-     var len = queue.length
-     n = n - len
-     while (queue.length) {
-         let cur = queue.shift()
-//            遍历
-         for (let i = 0; i < leaves[cur].length; i++) {
-             let u = leaves[cur][i]
-             let index = leaves[u].indexOf(cur)
-             if (index !== -1) {
-                 leaves[u].splice(index, 1)
-             }
-             if (leaves[u].length === 1) {
-               queue.push(u)
-             }
-         }
-     }
-  }
-  return queue
+    var leaves = {}
+    for (let i = 0; i < n; i++) {
+        leaves[i] = new Set()
+    }
+    for (let [u, v] of edges) {
+        leaves[u].add(v)
+        leaves[v].add(u)
+    }
+    // console.log(leaves)
+    while (Object.keys(leaves).length > 2) {
+        Object.keys(leaves).filter(key => leaves[key].size < 2).forEach(key => {
+            leaves[key].forEach((item) => {
+                leaves[item].delete(key)
+            })
+            delete leaves[key]
+        })
+    }
+    return Object.keys(leaves)
 };
-var n = 4, edges = [[1, 0], [1, 2], [1, 3]]
-console.log(findMinHeightTrees(n, edges))
+var n = 6
+    edges = [
+        [3,0],[3,1],[3,2],[3,4],[5,4]
+    ]
+    console.log(findMinHeightTrees(n, edges))
