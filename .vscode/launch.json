@@ -8,7 +8,7 @@
       "type": "node",
       "request": "launch",
       "name": "Launch Program",
-      "program": "${workspaceFolder}/triangleNumber.js"
+      "program": "${workspaceFolder}/gardenNoAdj.js"
     }
   ]
 }
